@@ -2,15 +2,15 @@ package com.github.crispyteam.parsing
 
 import com.github.crispyteam.parsing.TokenType.*
 
-class CalcLexer(private val source: String) : Iterator<Token?> {
+class Lexer(private val source: String) : Iterator<Token> {
     private var position = 0
 
     private fun advance(): Char =
-        if (atEnd()) {
-            0.toChar()
-        } else {
-            source[position++]
-        }
+            if (atEnd()) {
+                0.toChar()
+            } else {
+                source[position++]
+            }
 
     private fun current() = if (atEnd()) 0.toChar() else source[position]
 
@@ -46,7 +46,7 @@ class CalcLexer(private val source: String) : Iterator<Token?> {
 
     override fun hasNext() = !atEnd()
 
-    override fun next() = scanToken()
+    override fun next() = scanToken() ?: throw IllegalStateException("Trying to pull Token past EOF")
 
     private fun scanToken(): Token? {
         takeWhile(Char::isWhitespace)
