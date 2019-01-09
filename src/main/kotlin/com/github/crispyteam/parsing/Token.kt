@@ -20,4 +20,7 @@ enum class TokenType {
     EOF,
 }
 
+/**
+ * A lexical Token is a string with an assigned meaning.
+ */
 data class Token(val type: TokenType, val lexeme: String)
