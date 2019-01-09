@@ -97,7 +97,7 @@ class Lexer(private val source: String) : Iterator<Token> {
             current == '=' -> advanceToken(EQUALS, "=")
             current == '(' -> advanceToken(OPEN_PAREN, "(")
             current == ')' -> advanceToken(CLOSE_PAREN, ")")
-            else -> advanceToken(ERROR, "")
+            else -> advanceToken(ERROR, "Invalid char: '$current'")
         }
     }
 }

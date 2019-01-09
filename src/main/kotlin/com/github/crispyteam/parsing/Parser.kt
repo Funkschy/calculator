@@ -10,14 +10,14 @@ class Parser {
     private lateinit var tokens: List<Token>
     private var position = 0
 
-    fun parse(tokens: Iterator<Token>): Expr {
-        this.tokens = tokens.asSequence().toList()
-        this.position = 0
-
-        return expression()
-    }
+    fun parse(tokens: Iterator<Token>) = parse(tokens.asSequence().toList())
 
     fun parse(tokens: List<Token>): Expr {
+        val errors = tokens.asSequence().filter { it.type == ERROR }.map { it.lexeme }.joinToString(", ")
+        if (errors.isNotEmpty()) {
+            throw ParseError("Lex Errors: $errors")
+        }
+
         this.tokens = tokens
         this.position = 0
 
@@ -48,7 +48,7 @@ class Parser {
     }
 
     private fun consume(tokenType: TokenType) {
-        if (!match(tokenType)) throw ParseError("Expected $tokenType, but got ${previous()}")
+        if (!match(tokenType)) throw ParseError("Expected '$tokenType', but got '${previous().type}'")
     }
 
     private fun matchAny(vararg tokenType: TokenType) = tokenType.any { match(it) }
@@ -113,6 +113,6 @@ class Parser {
                 }
                 match(DEC_NUMBER) -> Number(previous().lexeme.toDouble())
                 match(IDENTIFIER) -> Identifier(previous().lexeme)
-                else -> throw ParseError("Unexpected Token: ${previous()}")
+                else -> throw ParseError("Unexpected Token: '${previous().lexeme}'")
             }
 }

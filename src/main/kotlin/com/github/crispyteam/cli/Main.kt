@@ -1,7 +1,9 @@
 package com.github.crispyteam.cli
 
 import com.github.crispyteam.interpreter.Interpreter
+import com.github.crispyteam.interpreter.RuntimeError
 import com.github.crispyteam.parsing.Lexer
+import com.github.crispyteam.parsing.ParseError
 import com.github.crispyteam.parsing.Parser
 
 fun main(args: Array<String>) {
@@ -13,6 +15,12 @@ fun main(args: Array<String>) {
     while (true) {
         print("> ")
         line = readLine() ?: break
-        println(interpreter.eval(parser.parse(Lexer(line))))
+        try {
+            println(interpreter.eval(parser.parse(Lexer(line))))
+        } catch (p: ParseError) {
+            println("Errors while parsing: ${p.message}")
+        } catch (r: RuntimeError) {
+            println("Errors while Executing : ${r.message}")
+        }
     }
 }

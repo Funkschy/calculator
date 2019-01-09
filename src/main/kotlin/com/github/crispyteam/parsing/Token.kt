@@ -14,8 +14,6 @@ enum class TokenType {
     SLASH,
     EQUALS,
 
-    VAL,
-
     ERROR,
     EOF,
 }
