@@ -14,11 +14,11 @@ class Lexer(private val source: String) : Iterator<Token> {
      * @return Either a null byte or the char at the current position.
      */
     private fun advance(): Char =
-            if (atEnd()) {
-                0.toChar()
-            } else {
-                source[position++]
-            }
+        if (atEnd()) {
+            0.toChar()
+        } else {
+            source[position++]
+        }
 
     /**
      * The current char in the source code.
@@ -50,12 +50,8 @@ class Lexer(private val source: String) : Iterator<Token> {
     /**
      * Advances and constructs a Token with the given values.
      * @param type the TokenType.
-     * @param lexeme the String of the Token.
      */
-    private fun advanceToken(type: TokenType, lexeme: String): Token {
-        advance()
-        return Token(type, lexeme)
-    }
+    private fun advanceToken(type: TokenType) = Token(type, advance().toString())
 
     private fun lexIdentifier() = Token(IDENTIFIER, takeWhile { c -> c.isLetterOrDigit() || c == '_' })
 
@@ -90,14 +86,17 @@ class Lexer(private val source: String) : Iterator<Token> {
             atEnd() -> null
             current.isLetter() -> lexIdentifier()
             current.isDigit() -> lexNumber()
-            current == '+' -> advanceToken(PLUS, "+")
-            current == '-' -> advanceToken(MINUS, "-")
-            current == '*' -> advanceToken(STAR, "*")
-            current == '/' -> advanceToken(SLASH, "/")
-            current == '=' -> advanceToken(EQUALS, "=")
-            current == '(' -> advanceToken(OPEN_PAREN, "(")
-            current == ')' -> advanceToken(CLOSE_PAREN, ")")
-            else -> advanceToken(ERROR, "Invalid char: '$current'")
+            current == '+' -> advanceToken(PLUS)
+            current == '-' -> advanceToken(MINUS)
+            current == '*' -> advanceToken(STAR)
+            current == '/' -> advanceToken(SLASH)
+            current == '=' -> advanceToken(EQUALS)
+            current == '(' -> advanceToken(OPEN_PAREN)
+            current == ')' -> advanceToken(CLOSE_PAREN)
+            else -> {
+                advance()
+                Token(ERROR, "Invalid char: '$current'")
+            }
         }
     }
 }
