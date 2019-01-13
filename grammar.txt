@@ -1,0 +1,21 @@
+expression  = declaration
+
+declaration = ( IDENTIFIER "=" )? term
+
+term        = factor( ( "+" | "-" ) factor )*
+
+factor      = unary ( ( "*" | "/" ) unary )*
+
+unary       = ( "-" )? primary
+
+primary     = "(" expr ")" | NUMBER | IDENTIFIER
+
+-------------------------------------------------
+
+NUMBER      = DIGIT+ "." DIGIT+ 
+
+IDENTIFIER  = LETTER ( LETTER | DIGIT | "_" )*
+
+DIGIT       = [0-9] 
+
+LETTER      = [a-zA-Z] 
