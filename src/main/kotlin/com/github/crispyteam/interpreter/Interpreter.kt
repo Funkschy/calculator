@@ -8,10 +8,14 @@ import com.github.crispyteam.parsing.ExprVisitor
 
 class RuntimeError(msg: String) : RuntimeException(msg)
 
-class Interpreter : ExprVisitor {
+interface Interpreter: ExprVisitor {
+    fun eval(expr: Expr) = expr.accept(this)
+}
+
+class CalcInterpreter : Interpreter {
     private val variables: MutableMap<Identifier, Double> = HashMap()
 
-    fun eval(expr: Expr) = expr.accept(this)
+    override fun eval(expr: Expr) = expr.accept(this)
 
     override fun evalBinary(expr: BinaryOperation): Double {
         val left = eval(expr.left)
