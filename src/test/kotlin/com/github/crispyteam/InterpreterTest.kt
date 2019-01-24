@@ -1,16 +1,16 @@
 package com.github.crispyteam
 
-import com.github.crispyteam.interpreter.Interpreter
+import com.github.crispyteam.cli.interpreter
 import com.github.crispyteam.parsing.Lexer
 import com.github.crispyteam.parsing.Parser
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class InterpreterTest : StringSpec({
+class CalcInterpreterTest : StringSpec({
     "multiplication should be evaluated first" {
         val lexer = Lexer("1 + 2 * -3.5")
         val parser = Parser()
-        val interpreter = Interpreter()
+        val interpreter = interpreter()
 
         val result = interpreter.eval(parser.parse(lexer.asSequence().toList()))
 
@@ -20,7 +20,7 @@ class InterpreterTest : StringSpec({
     "variables should be saved in environment with evaluated value" {
         var lexer = Lexer("test = 1 + 2")
         val parser = Parser()
-        val interpreter = Interpreter()
+        val interpreter = interpreter()
 
         var result = interpreter.eval(parser.parse(lexer.asSequence().toList()))
 
@@ -35,7 +35,7 @@ class InterpreterTest : StringSpec({
     "declarations should return the assigned value" {
         var lexer = Lexer("test = variable = 1 + 2")
         val parser = Parser()
-        val interpreter = Interpreter()
+        val interpreter = interpreter()
 
         var result = interpreter.eval(parser.parse(lexer.asSequence().toList()))
 
